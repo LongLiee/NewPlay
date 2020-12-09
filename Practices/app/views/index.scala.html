@@ -1,0 +1,239 @@
+@*
+* This template takes a single argument, a String containing a
+* message to display.
+*@
+@import helper._
+@import play.api.libs.json.JsValue
+@import play.api.data._
+@import play.api.data.Forms._
+@(result: String,jsonData:JsValue)
+
+
+
+
+    @*
+    * Call the `main` template with two arguments. The first
+    * argument is a `String` with the title of the page, the second
+    * argument is an `Html` object containing the body of the page.
+    *@
+   @* @main("Welcome to Play", welcome(message, style = "scala"),chartData)) {
+
+    }*@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        @* Here's where we render the page title `String`. *@
+        <title>@result</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <figure class="highcharts-figure">
+            <div id="container"></div>
+            <p class="highcharts-description">
+                Basic line chart showing trends in a dataset. This chart includes the
+                <code>series-label</code> module, which adds a label to each line for
+                enhanced readability.
+            </p>
+        </figure>
+        <div class="select--tag">
+            <form method="post" action="@routes.HomeController.postData()" enctype="text/plain">
+@*                <select type="text" id="category" >*@
+@*                    <option value="All">All category</option>*@
+@*                    <option value="MenClo">Men's Clothing</option>*@
+@*                    <option value="WomenClo">Women's Clothing</option>*@
+@*                </select>*@
+@*                <select id="days">*@
+@*                    <option value="oneDay">1 day</option>*@
+@*                    <option value="twoDays">2 days</option>*@
+@*                    <option value="threeDays">3 days</option>*@
+@*                </select>*@
+                <label for="fname">First name:</label><br>
+                <input type="text" id="fname" name="fname" ><br>
+                <input type="submit" value="Submit">
+            </form>
+
+        </div>
+
+
+
+
+
+
+
+
+
+@*     <button id="submitBtn" onclick="postData()">Apply</button>*@
+        <script type="text/javascript">
+                var chart
+                var objData = @Html(jsonData.toString())
+                console.log(objData[0])
+
+                // // One day
+                // var dataMenClothing = [objData[0][0].doc_count,objData[0][1].doc_count,objData[0][2].doc_count,
+                //              objData[0][3].doc_count,objData[0][4].doc_count,objData[0][5].doc_count,objData[0][6].doc_count]
+                // var dataWomenClothing = [objData[1][0].doc_count,objData[1][1].doc_count,objData[1][2].doc_count,objData[1][3].doc_count,
+                //     objData[1][4].doc_count,objData[1][5].doc_count,objData[1][6].doc_count]
+                // var oneDaytimeLine = [objData[0][0].key_as_string,objData[0][1].key_as_string,objData[0][2].key_as_string,
+                //     objData[0][3].key_as_string,objData[0][4].key_as_string,objData[0][5].key_as_string,objData[0][6].key_as_string]
+                //
+                //
+                // // Two day
+                // var dataMenClothingTwo = [objData[0][0].doc_count + objData[0][1].doc_count,objData[0][2].doc_count +
+                //     objData[0][3].doc_count,objData[0][4].doc_count + objData[0][5].doc_count,objData[0][6].doc_count]
+                // var dataWomenClothingTwo = [objData[1][0].doc_count + objData[1][1].doc_count,objData[1][2].doc_count + objData[1][3].doc_count,
+                //     objData[1][4].doc_count + objData[1][5].doc_count,objData[1][6].doc_count]
+                // var twoDayTimeLine = [objData[0][1].key_as_string,objData[0][3].key_as_string,objData[0][5].key_as_string,objData[0][6].key_as_string]
+                //
+                // // Three day
+                // var dataMenClothingThree = [objData[0][0].doc_count + objData[0][1].doc_count + objData[0][2].doc_count,
+                //     objData[0][3].doc_count + objData[0][4].doc_count + objData[0][5].doc_count,objData[0][6].doc_count]
+                // var dataWomenClothingThree = [objData[1][0].doc_count + objData[1][1].doc_count + objData[1][2].doc_count,objData[1][3].doc_count +
+                //     objData[1][4].doc_count + objData[1][5].doc_count,objData[1][6].doc_count]
+                // var threeDayTimeLine = [objData[0][2].key_as_string,objData[0][5].key_as_string,objData[0][6].key_as_string]
+
+                // function postData (){
+                //     $.ajax({
+                //         url: "http://localhost:9001/count",
+                //         method: "POST",
+                //         data: "Test",
+                //         success: function (data) {
+                //             console.log(data)
+                //         },
+                //         err: function (err){
+                //             console.error(err)
+                //         }
+                //     })
+                //
+                //
+                //
+                // }
+
+
+
+                var series =[{
+                    id:1,
+                    name: "Men's Clothing ",
+                    data: objData[1],
+                    color:'#FF0000'
+
+                 },
+                ]
+
+                // var filterData = function () {
+                //     var date = getValueDays();
+                //     var cate = getValueCategory();
+                //     console.log(date)
+                //     console.log(cate)
+                //     if ( cate == "All" && date == "oneDay"){
+                //         return updateUI(oneDaytimeLine,dataMenClothing,dataWomenClothing)
+                //     } else if (cate == "All" && date == "twoDays") {
+                //         return  updateUI(twoDayTimeLine,dataMenClothingTwo,dataWomenClothingTwo)
+                //     } else if (cate == "All" && date == "threeDays") {
+                //         return updateUI(threeDayTimeLine,dataMenClothingThree,dataWomenClothingThree)
+                //     } else if ( cate == "MenClo" && date == "oneDay"){
+                //         return updateUI(oneDaytimeLine,dataMenClothing,[])
+                //     } else if (cate == "MenClo" && date == "twoDays") {
+                //         return  updateUI(twoDayTimeLine,dataMenClothingTwo,[])
+                //     } else if (cate == "MenClo" && date == "threeDays") {
+                //         return updateUI(threeDayTimeLine,dataMenClothingThree,[])
+                //     } else if ( cate == "WomenClo" && date == "oneDay"){
+                //         return updateUI(oneDaytimeLine,[],dataWomenClothing)
+                //     } else if (cate == "WomenClo" && date == "twoDays") {
+                //         return  updateUI(twoDayTimeLine,[],dataWomenClothingTwo)
+                //     } else if (cate == "WomenClo" && date == "threeDays") {
+                //         return updateUI(threeDayTimeLine,[],dataWomenClothingThree)
+                //     } else {
+                //         console.log("Something else")
+                //     }
+                //
+                //
+                // }
+
+                // function updateUI (timeLine,menData,womenData) {
+                //    return chart.update({
+                //         xAxis:{
+                //             categories:timeLine
+                //         },
+                //         series:[{
+                //                 data: menData
+                //                 },
+                //             {
+                //                 data: womenData
+                //             }
+                //         ]
+                //     })
+                // }
+
+                function getValueCategory(){
+                    var eleSelected = document.getElementById("category")
+                    var valueSelected = eleSelected.options[eleSelected.selectedIndex].value;
+                    return valueSelected
+                }
+                function getValueDays(){
+                    var daySelected = document.getElementById("days")
+                    var valueDay = daySelected.options[daySelected.selectedIndex].value;
+                    return valueDay
+                }
+        </script>
+        <script type="module">
+             chart = Highcharts.chart('container', {
+                    title: {
+                        text: ''
+                    },
+
+                    subtitle: {
+                        text: ''
+                    },
+
+                    yAxis: {
+                        title: {
+                            text: 'Number of Employees'
+                        }
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                        categories: objData[0],
+                        tickInterval: 1
+                    },
+
+                    legend: {
+                        layout: 'horizontal',
+                        align: 'center',
+                        verticalAlign: 'top',
+                        marginLeft: 50
+                    },
+
+
+                    series: series,
+
+                    responsive: {
+                        rules: [{
+                            condition: {
+                                maxWidth: 500
+                            },
+                            chartOptions: {
+                                legend: {
+                                    layout: 'horizontal',
+                                    align: 'center',
+                                    verticalAlign: 'bottom'
+                                }
+                            }
+                        }]
+                    }
+
+                });
+
+
+        </script>
+
+
+        @* And here's where we render the `Html` object containing
+        * the page content. *@
+        @* @content
+        @text*@
+
+    </body>
+</html>
